@@ -16,6 +16,7 @@ export const HomePage = () => {
         setError(null);
         setDisplayTone(false);
         setLoading(true);
+        setTone('')
 
         // Error: no text entered
         if (text.trim().length === 0) {
@@ -32,7 +33,8 @@ export const HomePage = () => {
         try {
             const result = await analyzeTone(text);
             const sentimentScore = result?.documentSentiment?.score || 0;
-
+            // const sentimentScore = 0;
+            
             // Set tone based on sentiment score
             if (sentimentScore > 0.25) {
                 setTone('positive');
@@ -54,49 +56,62 @@ export const HomePage = () => {
     const getBackgroundColor = (tone: string) => {
         switch (tone) {
             case 'positive':
-                return 'bg-green-100';
+                return 'bg-gradient-to-br from-green-300 to-green-200';
             case 'negative':
-                return 'bg-red-100';
+                return 'bg-gradient-to-br from-red-300 to-red-200';
             case 'neutral':
-                return 'bg-gray-200';
+                return 'bg-gradient-to-br from-gray-300 to-gray-200';
             default:
-                return 'bg-white';
+                return 'bg-pink-100';
         }
     };
 
-    // Return color based on tone for text color
     const getToneColor = (tone: string) => {
         switch (tone) {
             case 'positive':
-                return 'text-green-500';
+                return 'text-green-900';
             case 'negative':
-                return 'text-red-500';
+                return 'text-red-900';
             case 'neutral':
-                return 'text-gray-500';
+                return 'text-gray-900';
             default:
                 return 'text-black';
         }
     };
 
     return (
-        <div className={`flex flex-col items-center justify-center min-h-screen transition-all duration-500 ${getBackgroundColor(tone)}`}>
-            <h1 className="text-4xl font-bold mb-6">Emotional Tone Detector</h1>
+        <div className={`flex flex-col items-center justify-center min-h-screen transition-all duration-700 ease-in-out ${getBackgroundColor(tone)}`}>
+            {/* Heading */}
+            <header className="text-center p-6">
+                <h1 className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-600 mb-4 duration-300 hover:scale-105">
+                    Emotional Tone Detector
+                </h1>
+            </header>
 
-            <form onSubmit={handleSubmit} className="p-6 bg-white rounded-lg shadow-md w-11/12 md:w-1/2 lg:w-1/3">
-                <textarea
-                    className="w-full p-4 mb-4 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
-                    placeholder="Enter your text here..."
-                    value={text}
-                    onChange={(e) => setText(e.target.value)}
-                />
+            {/* Form */}
+            <form onSubmit={handleSubmit} className="shadow-lg rounded-3xl p-10 w-11/12 md:w-2/3 lg:w-1/2 transition-transform duration-500 hover:shadow-2xl hover:scale-105">
+                <div className="relative">
+                    <textarea
+                        className={`w-full h-40 p-4 mb-4 rounded-xl focus:outline-none focus:ring-4 focus:ring-purple-300 transition-shadow duration-500 shadow-inner ${getBackgroundColor(tone)} border-none`}
+                        placeholder="Type your text here..."
+                        value={text}
+                        onChange={(e) => setText(e.target.value)}
+                        style={{ transition: 'background-color 0.5s ease, border 0.5s ease' }}
+                    />
+                    <span className="absolute right-4 top-4 text-gray-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h8m-4 4v-8" />
+                        </svg>
+                    </span>
+                </div>
                 <button
                     type="submit"
-                    className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-all duration-300"
+                    className="w-full bg-gradient-to-r from-purple-500 to-blue-500 text-white py-3 px-6 rounded-full shadow-lg font-bold text-lg transition-transform transform hover:scale-105 hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-purple-300 duration-500 active:bg-white"
                 >
                     {loading ? (
                         <div className="flex justify-center items-center">
                             <svg
-                                className="animate-spin h-5 w-5 mr-2 text-white"
+                                className="animate-spin h-6 w-6 mr-2 text-white"
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
                                 viewBox="0 0 24 24"
@@ -118,30 +133,28 @@ export const HomePage = () => {
                             Processing...
                         </div>
                     ) : (
-                        'Check'
+                        'Analyze Tone'
                     )}
                 </button>
             </form>
 
-            {/* Display Error Message */}
             {error && (
-                <div className="mt-4 text-red-500">
+                <div className="mt-6 p-4 text-red-500 rounded-lg w-11/12 md:w-2/3 lg:w-1/2 font-black text-center text-xl hover:scale-110 duration-300">
                     <p>{error}</p>
                 </div>
             )}
 
-            {/* Display Tone Result */}
             {displayTone && !error && !loading && (
-                <div className={`mt-8 p-6 border rounded-lg bg-white shadow-lg w-11/12 md:w-1/2 lg:w-1/3 transition-all duration-300`}>
-                    <p className={`text-2xl font-bold ${getToneColor(tone)}`}>
+                <div className={`mt-8 p-6 rounded-xl shadow-lg w-11/12 md:w-2/3 lg:w-1/2 transition-transform transform duration-500 hover:scale-105 ${getToneColor(tone)}`}>
+                    <p className={`text-3xl font-bold ${getToneColor(tone)}`}>
                         <strong>Detected Tone:</strong> {tone.charAt(0).toUpperCase() + tone.slice(1)}
                     </p>
-                    <p className="mt-2 text-gray-700">
+                    <p className="mt-3 text-gray-700 text-lg">
                         {tone === 'positive'
-                            ? 'The text is primarily positive!'
+                            ? 'This text reflects a positive tone. Keep spreading good vibes!'
                             : tone === 'negative'
-                                ? 'The text has a negative tone.'
-                                : 'The text appears to be neutral.'}
+                                ? 'This text carries a negative tone. It might evoke sadness or anger.'
+                                : 'This text seems neutral. It is quite balanced in tone.'}
                     </p>
                 </div>
             )}
