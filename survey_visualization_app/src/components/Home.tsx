@@ -145,7 +145,7 @@ export const HomePage = () => {
             )}
 
             {displayTone && !error && !loading && (
-                <div className={`mt-8 p-6 rounded-xl shadow-lg w-11/12 md:w-2/3 lg:w-1/2 transition-transform transform duration-500 hover:scale-105 ${getToneColor(tone)}`}>
+                <div className={`mt-8 p-6 w-11/12 md:w-2/3 lg:w-1/2 transition-transform transform duration-500 hover:scale-105 ${getToneColor(tone)} text-center`}>
                     <p className={`text-3xl font-bold ${getToneColor(tone)}`}>
                         <strong>Detected Tone:</strong> {tone.charAt(0).toUpperCase() + tone.slice(1)}
                     </p>
