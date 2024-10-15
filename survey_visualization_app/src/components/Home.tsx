@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { analyzeTone } from "../utils/api";
 
 export const HomePage = () => {
     const [text, setText] = useState<string>('');
@@ -19,12 +20,30 @@ export const HomePage = () => {
         setDisplayTone(true);
 
         // Call API to analyze emotional tone here
-        await analyzeTone(text);
+        const result = await analyzeTone(text);
+
+        const sentimentScore = result?.documentSentiment?.score || 0;
+        console.log(sentimentScore);
+        if (sentimentScore > 0.25) {
+            setTone('positive');
+        } else if (sentimentScore < -0.25) {
+            setTone('negative');
+        } else {
+            setTone('neutral');
+        }
     };
 
-    const analyzeTone = async (text: string) => {
-        console.log("Analyzing tone");
-        setTone("Happy");
+    const getToneColor = (tone: string) => {
+        switch (tone) {
+            case 'positive':
+                return 'text-green-500';
+            case 'negative':
+                return 'text-red-500';
+            case 'neutral':
+                return 'text-gray-500';
+            default:
+                return 'text-black';
+        }
     };
 
     return (
@@ -51,7 +70,7 @@ export const HomePage = () => {
                 </div>
             )}
             {displayTone && !error && (
-                <div className="mt-6 p-4">
+                <div className={`mt-6 p-4 border rounded-lg bg-white shadow-md ${getToneColor(tone)}`}>
                     <p className="text-lg">
                         <strong>Detected Tone:</strong> {tone}
                     </p>
