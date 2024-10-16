@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { analyzeTone } from "../utils/api";
 import positiveImage from "../assets/Positive.jpg"
 import negativeImage from "../assets/Negative.jpg"
-import neutralImage from "../assets/Neutral.jpeg"
+import neutralImage from "../assets/Neutral.jpg"
 
 export const HomePage = () => {
     const [text, setText] = useState<string>('');
@@ -125,7 +125,7 @@ export const HomePage = () => {
                     />
                     <button
                         type="submit"
-                        className="w-full bg-gradient-to-r from-purple-500 to-blue-500 text-white py-3 rounded-full shadow-lg font-bold text-lg transition-transform transform hover:scale-105"
+                        className={`w-full ${getCardClass(tone)} ${getHeadingTextColor(tone)} text-white py-3 rounded-full shadow-lg font-bold text-lg transition-transform transform hover:scale-105`}
                     >
                         {loading ? 'Processing...' : 'Analyze Tone'}
                     </button>
@@ -169,7 +169,7 @@ export const HomePage = () => {
                         <img
                             src={neutralImage}
                             alt="Neutral Tone"
-                            className="h-full w-auto"
+                            className="h-1/3 w-auto"
                         />
                     </div>
                 </div>
