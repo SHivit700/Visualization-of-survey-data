@@ -36,7 +36,7 @@ export const HomePage = () => {
         try {
             // const result = await analyzeTone(text);
             // const sentimentScore = result?.documentSentiment?.score || 0;
-            const sentimentScore = 1;
+            const sentimentScore = -1;
 
             // Set tone based on sentiment score
             if (sentimentScore > 0.25) {
@@ -84,7 +84,7 @@ export const HomePage = () => {
             case 'Positive':
                 return 'bg-gradient-to-br from-bg-[#000000] to-bg-[#0482c4]';
             case 'Negative':
-                return 'bg-gradient-to-br from-red-400 to-red-300';
+                return 'bg-gradient-to-br from-[#ffaead] to-[#ffaead]';
             case 'Neutral':
                 return 'bg-[#cdc3b6]';
             default:
@@ -97,7 +97,7 @@ export const HomePage = () => {
             case 'Positive':
                 return 'text-[#038180]';
             case 'Negative':
-                return '';
+                return 'text-[#faf1e0]';
             case 'Neutral':
                 return 'text-[#99733b]';
             default:
