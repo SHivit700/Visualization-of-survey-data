@@ -36,7 +36,7 @@ export const HomePage = () => {
         try {
             // const result = await analyzeTone(text);
             // const sentimentScore = result?.documentSentiment?.score || 0;
-            const sentimentScore = 0;
+            const sentimentScore = 1;
 
             // Set tone based on sentiment score
             if (sentimentScore > 0.25) {
@@ -69,7 +69,7 @@ export const HomePage = () => {
     const getCardClass = (cardTone: string) => {
         switch (cardTone) {
             case 'Positive':
-                return 'bg-gradient-to-br from-green-400 to-green-300';
+                return 'bg-gradient-to-br from-[#6eb6b4] to-[#4caead]';
             case 'Negative':
                 return 'bg-gradient-to-br from-red-400 to-red-300';
             case 'Neutral':
@@ -82,7 +82,7 @@ export const HomePage = () => {
     const getFormBackground = (cardTone: string) => {
         switch (cardTone) {
             case 'Positive':
-                return 'bg-gradient-to-br from-green-400 to-green-300';
+                return 'bg-gradient-to-br from-bg-[#000000] to-bg-[#0482c4]';
             case 'Negative':
                 return 'bg-gradient-to-br from-red-400 to-red-300';
             case 'Neutral':
@@ -95,7 +95,7 @@ export const HomePage = () => {
     const getHeadingTextColor = (cardTone: string) => {
         switch (cardTone) {
             case 'Positive':
-                return '';
+                return 'text-[#038180]';
             case 'Negative':
                 return '';
             case 'Neutral':
@@ -135,8 +135,8 @@ export const HomePage = () => {
             </div>
 
             {/* Carousel Section */}
-            <div className="w-11/12 flex overflow-hidden h-[200px] m-10">
-                <div className="w-full flex transition-transform duration-1000 ease-in-out" style={{
+            <div className="flex overflow-hidden h-[200px] m-10">
+                <div className="flex transition-transform duration-1000 ease-in-out" style={{
                     transform: `translateX(-${activeIndex * 100}%)` // Calculate transform based on activeIndex
                 }}>
                     {/* Default Tone Card */}
