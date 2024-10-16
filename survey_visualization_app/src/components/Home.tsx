@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { analyzeTone } from "../utils/api";
 import positiveImage from "../assets/Positive.jpg"
+import negativeImage from "../assets/Negative.jpg"
+import neutralImage from "../assets/Neutral.jpeg"
 
 export const HomePage = () => {
     const [text, setText] = useState<string>('');
@@ -32,7 +34,7 @@ export const HomePage = () => {
         try {
             // const result = await analyzeTone(text);
             // const sentimentScore = result?.documentSentiment?.score || 0;
-            const sentimentScore = 1;
+            const sentimentScore = 0;
 
             // Set tone based on sentiment score
             if (sentimentScore > 0.25) {
@@ -121,17 +123,21 @@ export const HomePage = () => {
                     </div>
 
                     {/* Negative Tone Card */}
-                    <div className="w-full flex-shrink-0 h-full">
-                        <div className={`${getCardClass('negative')} w-full h-full rounded-lg flex items-center justify-center text-white`}>
-                            <p className="text-xl">Negative</p>
-                        </div>
+                    <div className="w-full flex-shrink-0 h-full flex items-center justify-center">
+                        <img
+                            src={negativeImage}
+                            alt="Negative Tone"
+                            className="h-full w-auto" 
+                        />
                     </div>
 
                     {/* Neutral Tone Card */}
-                    <div className="w-full flex-shrink-0 h-full">
-                        <div className={`${getCardClass('neutral')} w-full h-full rounded-lg flex items-center justify-center text-white`}>
-                            <p className="text-xl">Neutral</p>
-                        </div>
+                    <div className="w-full flex-shrink-0 h-full flex items-center justify-center">
+                        <img
+                            src={neutralImage}
+                            alt="Neutral Tone"
+                            className="h-full w-auto" 
+                        />
                     </div>
                 </div>
             </div>
