@@ -3,9 +3,7 @@ import { analyzeTone } from "../utils/api";
 
 export const HomePage = () => {
     const [text, setText] = useState<string>('');
-    const [tone, setTone] = useState<string>('');
     const [error, setError] = useState<string | null>(null);
-    const [displayTone, setDisplayTone] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false); // State to track loading status
     const [activeIndex, setActiveIndex] = useState<number>(0); // State to track the active card
 
@@ -15,9 +13,7 @@ export const HomePage = () => {
 
         // Reset the states when form is submitted
         setError(null);
-        setDisplayTone(false);
         setLoading(true);
-        setTone('')
         setActiveIndex(0); // Reset active card
 
         // Error: no text entered
@@ -39,17 +35,13 @@ export const HomePage = () => {
 
             // Set tone based on sentiment score
             if (sentimentScore > 0.25) {
-                setTone('positive');
                 setActiveIndex(1);
             } else if (sentimentScore < -0.25) {
-                setTone('negative');
                 setActiveIndex(2);
             } else {
-                setTone('neutral');
                 setActiveIndex(3);
             }
 
-            setDisplayTone(true); // Display the tone result
         } catch (err) {
             setError("There was an error analyzing the tone. Please try again later.");
         } finally {
@@ -59,20 +51,8 @@ export const HomePage = () => {
 
     const resetTone = () => {
         setText('');
-        setTone('default');
-        setDisplayTone(false);
         setError(null);
         setActiveIndex(0)
-    };
-
-    const getCarouselTransform = (index: number) => {
-        switch (index) {
-            case 0: return 'translate-x-0';            // Default card
-            case 1: return '-translate-x-[100%]';      // Positive card
-            case 2: return '-translate-x-[200%]';      // Negative card
-            case 3: return '-translate-x-[300%]';      // Neutral card
-            default: return 'translate-x-0';
-        }
     };
 
     // Get the card classes based on the tone
@@ -85,13 +65,13 @@ export const HomePage = () => {
             case 'neutral':
                 return 'bg-gradient-to-br from-gray-400 to-gray-300';
             default:
-                return 'bg-gray-400';
+                return 'bg-[#2b2738]';
         }
     };
 
     return (
-        <div className="min-h-screen bg-[#2b2738] flex items-center justify-center">
-            <div className="w-1/2">
+        <div className="min-h-screen bg-[#2b2738] flex flex-col items-center">
+            <div className="flex flex-col w-full max-w-[800px]">
                 {/* Form Section */}
                 <header className="text-center p-6 mb-10">
                     <h1 className="text-5xl font-extrabold text-white mb-4">Emotional Tone Detector</h1>
@@ -100,7 +80,7 @@ export const HomePage = () => {
                     </p>
                 </header>
 
-                <form onSubmit={handleSubmit} className="shadow-lg rounded-3xl p-10 w-full bg-[#3b364c]">
+                <form onSubmit={handleSubmit} className="shadow-lg rounded-3xl p-10 w-full bg-[#3b364c] mb-4">
                     <textarea
                         className="w-full h-40 p-4 mb-4 rounded-xl focus:ring-4 focus:ring-purple-300 shadow-inner bg-[#3b364c] border-none text-white"
                         placeholder="Type your text here..."
@@ -119,34 +99,34 @@ export const HomePage = () => {
             </div>
 
             {/* Carousel Section */}
-            <div className="relative w-1/3 h-48 overflow-hidden">
-                <div
-                    className={`flex transition-transform duration-500 ease-in-out ${getCarouselTransform(activeIndex)}`}
-                >
+            <div className="flex-grow w-11/12 flex overflow-hidden min-h-40 m-10"> 
+                <div className="w-full flex transition-transform duration-1000 ease-in-out" style={{
+                    transform: `translateX(-${activeIndex * 100}%)` // Calculate transform based on activeIndex
+                }}>
                     {/* Default Tone Card */}
-                    <div className="w-full flex-shrink-0">
-                        <div className={`${getCardClass('default')} w-full h-48 rounded-lg flex items-center justify-center text-white`}>
-                            <p className="text-xl">Default</p>
+                    <div className="w-full flex-shrink-0 h-full">
+                        <div className={`${getCardClass('default')} w-full h-full rounded-lg flex items-center justify-center text-white`}>
+                            <p className="text-xl">Enter text to determine your mood</p>
                         </div>
                     </div>
 
                     {/* Positive Tone Card */}
-                    <div className="w-full flex-shrink-0">
-                        <div className={`${getCardClass('positive')} w-full h-48 rounded-lg flex items-center justify-center text-white`}>
+                    <div className="w-full flex-shrink-0 h-full">
+                        <div className={`${getCardClass('positive')} w-full h-full rounded-lg flex items-center justify-center text-white`}>
                             <p className="text-xl">Positive</p>
                         </div>
                     </div>
 
                     {/* Negative Tone Card */}
-                    <div className="w-full flex-shrink-0">
-                        <div className={`${getCardClass('negative')} w-full h-48 rounded-lg flex items-center justify-center text-white`}>
+                    <div className="w-full flex-shrink-0 h-full">
+                        <div className={`${getCardClass('negative')} w-full h-full rounded-lg flex items-center justify-center text-white`}>
                             <p className="text-xl">Negative</p>
                         </div>
                     </div>
 
                     {/* Neutral Tone Card */}
-                    <div className="w-full flex-shrink-0">
-                        <div className={`${getCardClass('neutral')} w-full h-48 rounded-lg flex items-center justify-center text-white`}>
+                    <div className="w-full flex-shrink-0 h-full">
+                        <div className={`${getCardClass('neutral')} w-full h-full rounded-lg flex items-center justify-center text-white`}>
                             <p className="text-xl">Neutral</p>
                         </div>
                     </div>
