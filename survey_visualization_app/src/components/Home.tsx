@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { analyzeTone } from "../utils/api";
+import positiveImage from "../assets/Positive.jpg"
 
 export const HomePage = () => {
     const [text, setText] = useState<string>('');
@@ -31,7 +32,7 @@ export const HomePage = () => {
         try {
             // const result = await analyzeTone(text);
             // const sentimentScore = result?.documentSentiment?.score || 0;
-            const sentimentScore = 0;
+            const sentimentScore = 1;
 
             // Set tone based on sentiment score
             if (sentimentScore > 0.25) {
@@ -99,22 +100,24 @@ export const HomePage = () => {
             </div>
 
             {/* Carousel Section */}
-            <div className="flex-grow w-11/12 flex overflow-hidden min-h-40 m-10"> 
+            <div className="w-11/12 flex overflow-hidden h-[300px] m-10"> 
                 <div className="w-full flex transition-transform duration-1000 ease-in-out" style={{
                     transform: `translateX(-${activeIndex * 100}%)` // Calculate transform based on activeIndex
                 }}>
                     {/* Default Tone Card */}
                     <div className="w-full flex-shrink-0 h-full">
                         <div className={`${getCardClass('default')} w-full h-full rounded-lg flex items-center justify-center text-white`}>
-                            <p className="text-xl">Enter text to determine your mood</p>
+                            <p className="text-xl"></p>
                         </div>
                     </div>
 
                     {/* Positive Tone Card */}
-                    <div className="w-full flex-shrink-0 h-full">
-                        <div className={`${getCardClass('positive')} w-full h-full rounded-lg flex items-center justify-center text-white`}>
-                            <p className="text-xl">Positive</p>
-                        </div>
+                    <div className="w-full flex-shrink-0 h-full flex items-center justify-center">
+                        <img
+                            src={positiveImage}
+                            alt="Positive Tone"
+                            className="h-full w-auto" 
+                        />
                     </div>
 
                     {/* Negative Tone Card */}
