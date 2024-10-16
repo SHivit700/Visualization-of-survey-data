@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { analyzeTone } from "../utils/api";
 import positiveImage from "../assets/Positive.jpg"
 import negativeImage from "../assets/Negative.jpg"
@@ -7,6 +7,7 @@ import neutralImage from "../assets/Neutral.jpeg"
 export const HomePage = () => {
     const [text, setText] = useState<string>('');
     const [error, setError] = useState<string | null>(null);
+    const [tone, setTone] = useState<string>("default");
     const [loading, setLoading] = useState<boolean>(false); // State to track loading status
     const [activeIndex, setActiveIndex] = useState<number>(0); // State to track the active card
 
@@ -18,6 +19,7 @@ export const HomePage = () => {
         setError(null);
         setLoading(true);
         setActiveIndex(0); // Reset active card
+        setTone("default");
 
         // Error: no text entered
         if (text.trim().length === 0) {
@@ -39,10 +41,14 @@ export const HomePage = () => {
             // Set tone based on sentiment score
             if (sentimentScore > 0.25) {
                 setActiveIndex(1);
+                setTone("Positive");
+                // startFireworks();
             } else if (sentimentScore < -0.25) {
                 setActiveIndex(2);
+                setTone("Negative");
             } else {
                 setActiveIndex(3);
+                setTone("Neutral");
             }
 
         } catch (err) {
@@ -56,36 +62,63 @@ export const HomePage = () => {
         setText('');
         setError(null);
         setActiveIndex(0)
+        setTone("default")
     };
 
     // Get the card classes based on the tone
     const getCardClass = (cardTone: string) => {
         switch (cardTone) {
-            case 'positive':
+            case 'Positive':
                 return 'bg-gradient-to-br from-green-400 to-green-300';
-            case 'negative':
+            case 'Negative':
                 return 'bg-gradient-to-br from-red-400 to-red-300';
-            case 'neutral':
-                return 'bg-gradient-to-br from-gray-400 to-gray-300';
+            case 'Neutral':
+                return 'bg-gradient-to-br from-[#d8c8b4] to-[#bfa687]';
             default:
                 return 'bg-[#2b2738]';
         }
     };
 
+    const getFormBackground = (cardTone: string) => {
+        switch (cardTone) {
+            case 'Positive':
+                return 'bg-gradient-to-br from-green-400 to-green-300';
+            case 'Negative':
+                return 'bg-gradient-to-br from-red-400 to-red-300';
+            case 'Neutral':
+                return 'bg-[#cdc3b6]';
+            default:
+                return 'bg-[#3b364c] focus:ring-purple-300';
+        }
+    };
+
+    const getHeadingTextColor = (cardTone: string) => {
+        switch (cardTone) {
+            case 'Positive':
+                return '';
+            case 'Negative':
+                return '';
+            case 'Neutral':
+                return 'text-[#99733b]';
+            default:
+                return 'text-white';
+        }
+    };
+
     return (
-        <div className="min-h-screen bg-[#2b2738] flex flex-col items-center">
+        <div className={`min-h-screen ${getCardClass(tone)} flex flex-col items-center duration-1000 ease-in-out pt-20`}>
             <div className="flex flex-col w-full max-w-[800px]">
                 {/* Form Section */}
                 <header className="text-center p-6 mb-10">
-                    <h1 className="text-5xl font-extrabold text-white mb-4">Emotional Tone Detector</h1>
-                    <p className="text-lg text-white">
+                    <h1 className={`text-5xl font-extrabold mb-4 ${getHeadingTextColor(tone)}`}>Emotional Tone Detector</h1>
+                    <p className={`text-lg text-white ${getHeadingTextColor(tone)}`}>
                         A tone analyzer that can assess the sentiment of your text and categorize it as positive, neutral, or negative.
                     </p>
                 </header>
 
-                <form onSubmit={handleSubmit} className="shadow-lg rounded-3xl p-10 w-full bg-[#3b364c] mb-4">
+                <form onSubmit={handleSubmit} className={`shadow-lg rounded-3xl p-10 w-full ${getFormBackground(tone)} mb-4`}>
                     <textarea
-                        className="w-full h-40 p-4 mb-4 rounded-xl focus:ring-4 focus:ring-purple-300 shadow-inner bg-[#3b364c] border-none text-white"
+                        className={`w-full h-40 p-4 mb-4 rounded-xl focus:ring-4 shadow-inner border-none text-white ${getFormBackground(tone)} ${getHeadingTextColor(tone)}`}
                         placeholder="Type your text here..."
                         value={text}
                         onChange={(e) => setText(e.target.value)}
@@ -102,7 +135,7 @@ export const HomePage = () => {
             </div>
 
             {/* Carousel Section */}
-            <div className="w-11/12 flex overflow-hidden h-[300px] m-10"> 
+            <div className="w-11/12 flex overflow-hidden h-[200px] m-10">
                 <div className="w-full flex transition-transform duration-1000 ease-in-out" style={{
                     transform: `translateX(-${activeIndex * 100}%)` // Calculate transform based on activeIndex
                 }}>
@@ -118,7 +151,7 @@ export const HomePage = () => {
                         <img
                             src={positiveImage}
                             alt="Positive Tone"
-                            className="h-full w-auto" 
+                            className="h-full w-auto"
                         />
                     </div>
 
@@ -127,7 +160,7 @@ export const HomePage = () => {
                         <img
                             src={negativeImage}
                             alt="Negative Tone"
-                            className="h-full w-auto" 
+                            className="h-full w-auto"
                         />
                     </div>
 
@@ -136,7 +169,7 @@ export const HomePage = () => {
                         <img
                             src={neutralImage}
                             alt="Neutral Tone"
-                            className="h-full w-auto" 
+                            className="h-full w-auto"
                         />
                     </div>
                 </div>
