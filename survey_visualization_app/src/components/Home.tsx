@@ -5,9 +5,9 @@ import negativeImage from "../assets/Negative.jpg"
 import neutralImage from "../assets/Neutral.jpg"
 
 export const HomePage = () => {
-    const [text, setText] = useState<string>('');
-    const [error, setError] = useState<string | null>(null);
-    const [tone, setTone] = useState<string>("default");
+    const [text, setText] = useState<string>(''); // User's input text 
+    const [error, setError] = useState<string | null>(null); // For when input text is not valid
+    const [tone, setTone] = useState<string>("default"); // Positive, Negative, Neutral or Default
     const [loading, setLoading] = useState<boolean>(false); // State to track loading status
     const [activeIndex, setActiveIndex] = useState<number>(0); // State to track the active card
 
@@ -34,16 +34,14 @@ export const HomePage = () => {
 
     const callAPIAndAnalyzeMood = async () => {
         try {
-            // const result = await analyzeTone(text);
-            // const sentimentScore = result?.documentSentiment?.score || 0;
-            // const sentimentScore = Math.random()-.5;
-            const sentimentScore = 1;
+            const result = await analyzeTone(text);
+            const sentimentScore = result?.documentSentiment?.score || 0;
+            // const sentimentScore = 1; // For testing
 
             // Set tone based on sentiment score
             if (sentimentScore > 0.25) {
                 setActiveIndex(1);
                 setTone("Positive");
-                // startFireworks();
             } else if (sentimentScore < -0.25) {
                 setActiveIndex(2);
                 setTone("Negative");
@@ -66,13 +64,13 @@ export const HomePage = () => {
         setTone("default")
     };
 
-    // Get the card classes based on the tone
-    const getCardClass = (cardTone: string) => {
+    // Get the background color for screen and button based on the tone
+    const getBackgroundForScreenAndButton = (cardTone: string) => {
         switch (cardTone) {
             case 'Positive':
-                return 'bg-gradient-to-br from-[#89c7c6] to-[#88bebe]';
+                return ' bg-[#89c7c6] ';
             case 'Negative':
-                return 'bg-gradient-to-br from-[#ffaead] to-[#ffaead]';
+                return ' bg-[#ffaead] ';
             case 'Neutral':
                 return 'bg-gradient-to-br from-[#d8c8b4] to-[#bfa687]';
             default:
@@ -80,12 +78,13 @@ export const HomePage = () => {
         }
     };
 
+    // Returns background color for the input form 
     const getFormBackground = (cardTone: string) => {
         switch (cardTone) {
             case 'Positive':
-                return 'bg-gradient-to-br from-[#9ed0d2] to-[#9ed0d2] focus:ring-purple-300 ';
+                return 'bg-[#9ed0d2] focus:ring-purple-300 ';
             case 'Negative':
-                return 'bg-gradient-to-br from-[#FFB6C1] to-[#FFB6C1] ';
+                return 'bg-[#FFB6C1] ';
             case 'Neutral':
                 return 'bg-[#cdc3b6]';
             default:
@@ -93,6 +92,7 @@ export const HomePage = () => {
         }
     };
 
+    // Returns text color based on tone 
     const getHeadingTextColor = (cardTone: string) => {
         switch (cardTone) {
             case 'Positive':
@@ -107,9 +107,8 @@ export const HomePage = () => {
     };
 
     return (
-        <div className={`min-h-screen ${getCardClass(tone)} flex flex-col items-center duration-1000 ease-in-out pt-20`}>
+        <div className={`min-h-screen ${getBackgroundForScreenAndButton(tone)} flex flex-col items-center duration-1000 ease-in-out pt-20`}>
             <div className="flex flex-col w-full max-w-[800px]">
-                {/* Form Section */}
                 <header className="text-center p-6 mb-10">
                     <h1 className={`text-5xl font-extrabold mb-4 ${getHeadingTextColor(tone)}` } >Emotional Tone Detector</h1>
                     <p className={`text-lg text-white ${getHeadingTextColor(tone)}`}>
@@ -126,13 +125,13 @@ export const HomePage = () => {
                     />
                     <button
                         type="submit"
-                        className={`w-full ${getCardClass(tone)} ${getHeadingTextColor(tone)} text-white py-3 rounded-full shadow-lg font-bold text-lg transition-transform transform hover:scale-105`}
+                        className={`w-full ${getBackgroundForScreenAndButton(tone)} ${getHeadingTextColor(tone)} text-white py-3 rounded-full shadow-lg font-bold text-lg transition-transform transform hover:scale-105`}
                     >
                         {loading ? 'Processing...' : 'Analyze Tone'}
                     </button>
                 </form>
                 {error && <div className="mt-6 p-4 text-red-500 rounded-lg text-center">{error}</div>}
-                <button onClick={resetTone} className="mt-4 text-blue-800 underline text-lg w-full">Reset</button>
+                <button onClick={resetTone} className="mt-4 text-blue-500 underline text-lg w-full">Reset</button>
             </div>
 
             {/* Carousel Section */}
@@ -142,7 +141,7 @@ export const HomePage = () => {
                 }}>
                     {/* Default Tone Card */}
                     <div className="w-full flex-shrink-0 h-full">
-                        <div className={`${getCardClass('default')} w-full h-full rounded-lg flex items-center justify-center text-white`}>
+                        <div className={`${getBackgroundForScreenAndButton('default')} w-full h-full rounded-lg flex items-center justify-center text-white`}>
                             <p className="text-xl"></p>
                         </div>
                     </div>
