@@ -36,7 +36,8 @@ export const HomePage = () => {
         try {
             const result = await analyzeTone(text);
             const sentimentScore = result?.documentSentiment?.score || 0;
-            // const sentimentScore = 1; // For testing
+            // For testing
+            // const sentimentScore = 1; 
 
             // Set tone based on sentiment score
             if (sentimentScore > 0.25) {
