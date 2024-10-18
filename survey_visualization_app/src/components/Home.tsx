@@ -36,7 +36,8 @@ export const HomePage = () => {
         try {
             // const result = await analyzeTone(text);
             // const sentimentScore = result?.documentSentiment?.score || 0;
-            const sentimentScore = -1;
+            // const sentimentScore = Math.random()-.5;
+            const sentimentScore = 1;
 
             // Set tone based on sentiment score
             if (sentimentScore > 0.25) {
@@ -69,9 +70,9 @@ export const HomePage = () => {
     const getCardClass = (cardTone: string) => {
         switch (cardTone) {
             case 'Positive':
-                return 'bg-gradient-to-br from-[#6eb6b4] to-[#4caead]';
+                return 'bg-gradient-to-br from-[#89c7c6] to-[#88bebe]';
             case 'Negative':
-                return 'bg-gradient-to-br from-red-400 to-red-300';
+                return 'bg-gradient-to-br from-[#ffaead] to-[#ffaead]';
             case 'Neutral':
                 return 'bg-gradient-to-br from-[#d8c8b4] to-[#bfa687]';
             default:
@@ -82,9 +83,9 @@ export const HomePage = () => {
     const getFormBackground = (cardTone: string) => {
         switch (cardTone) {
             case 'Positive':
-                return 'bg-gradient-to-br from-bg-[#000000] to-bg-[#0482c4]';
+                return 'bg-gradient-to-br from-[#9ed0d2] to-[#9ed0d2] focus:ring-purple-300 ';
             case 'Negative':
-                return 'bg-gradient-to-br from-[#ffaead] to-[#ffaead]';
+                return 'bg-gradient-to-br from-[#FFB6C1] to-[#FFB6C1] ';
             case 'Neutral':
                 return 'bg-[#cdc3b6]';
             default:
@@ -95,9 +96,9 @@ export const HomePage = () => {
     const getHeadingTextColor = (cardTone: string) => {
         switch (cardTone) {
             case 'Positive':
-                return 'text-[#038180]';
+                return 'text-[#0b837f]';
             case 'Negative':
-                return 'text-[#faf1e0]';
+                return 'text-[#d333337b] ';
             case 'Neutral':
                 return 'text-[#99733b]';
             default:
@@ -110,7 +111,7 @@ export const HomePage = () => {
             <div className="flex flex-col w-full max-w-[800px]">
                 {/* Form Section */}
                 <header className="text-center p-6 mb-10">
-                    <h1 className={`text-5xl font-extrabold mb-4 ${getHeadingTextColor(tone)}`}>Emotional Tone Detector</h1>
+                    <h1 className={`text-5xl font-extrabold mb-4 ${getHeadingTextColor(tone)}` } >Emotional Tone Detector</h1>
                     <p className={`text-lg text-white ${getHeadingTextColor(tone)}`}>
                         A tone analyzer that can assess the sentiment of your text and categorize it as positive, neutral, or negative.
                     </p>
@@ -131,7 +132,7 @@ export const HomePage = () => {
                     </button>
                 </form>
                 {error && <div className="mt-6 p-4 text-red-500 rounded-lg text-center">{error}</div>}
-                <button onClick={resetTone} className="mt-4 text-blue-500 underline text-lg w-full">Reset</button>
+                <button onClick={resetTone} className="mt-4 text-blue-800 underline text-lg w-full">Reset</button>
             </div>
 
             {/* Carousel Section */}
