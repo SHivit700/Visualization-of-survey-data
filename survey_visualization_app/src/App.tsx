@@ -5,7 +5,7 @@ function App() {
   return (
     <div className="App">
       <Routes>
-        {/* Default route for web application */}
+        {/* Default route for the web-app */}
         <Route path="/" element={<HomePage />} />      
       </Routes>
     </div>
